@@ -1,0 +1,16 @@
+<resources>
+    <style name="ShapeAppearanceOverlay">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+    <style name="ShapeAppearanceOverlay.CarShining">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>   <!-- 跟卡片的 cardCornerRadius 一致 -->
+    </style>
+
+    <style name="ShapeAppearanceOverlay.CarShining.CardImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+</resources>
+

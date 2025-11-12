@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">CarShining</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_bottom">Bottom</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="all_services">All Services</string>
+    <string name="nav_open">Open navigation drawer</string>
+    <string name="nav_close">Close navigation drawer</string>
+    <string name="description">.   Our Expert Service Provider Will Send Your a \n    Detail Based On Your Specific Cleaning \n    Requirements.</string>
+    <string name="description2">.  Please Ensure That You give As Much Detail \n   As Possible To Get Best Quote.</string>
+    <string name="note">You Will Receive an SMS/Email Confirming The\nConfirmation Of Booking</string>
+</resources>
