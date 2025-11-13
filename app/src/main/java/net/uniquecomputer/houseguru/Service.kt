@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import net.uniquecomputer.houseguru.Adapter.HomeMaintenanceAdapter
-import net.uniquecomputer.houseguru.Model.HomeMaintenceModel
+import net.uniquecomputer.houseguru.Adapter.AllServicesAdapter
+import net.uniquecomputer.houseguru.Model.AllServicesModel
 import net.uniquecomputer.houseguru.databinding.FragmentServiceBinding
 
 class Service : Fragment() {
 
-    private lateinit var  binding : FragmentServiceBinding
-
-    lateinit var homeMaintenanceAdapter: HomeMaintenanceAdapter
-    private lateinit var homeMaintenanceArrayList : ArrayList<HomeMaintenceModel>
+    private lateinit var binding: FragmentServiceBinding
+    lateinit var allServicesAdapter: AllServicesAdapter
+    private lateinit var allServicesArrayList: ArrayList<AllServicesModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,12 +24,11 @@ class Service : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentServiceBinding.inflate(layoutInflater,container,false)
-        homeMaintenanceArrayList = ArrayList()
+        binding = FragmentServiceBinding.inflate(layoutInflater, container, false)
+        allServicesArrayList = ArrayList()
 
-// 1. Discount Cleaning
-        homeMaintenanceArrayList.add(
-            HomeMaintenceModel(
+        allServicesArrayList.add(
+            AllServicesModel(
                 R.drawable.max_discont_cleaning,
                 "Discount Cleaning",
                 desc = "Basic exterior wash for a quick glossy shine.",
@@ -38,10 +36,8 @@ class Service : Fragment() {
                 price = "RM19"
             )
         )
-
-// 2. Premium Cleaning
-        homeMaintenanceArrayList.add(
-            HomeMaintenceModel(
+        allServicesArrayList.add(
+            AllServicesModel(
                 R.drawable.max_premium_cleaning,
                 "Premium Cleaning",
                 desc = "Inside & outside detailing with protective finish.",
@@ -49,10 +45,8 @@ class Service : Fragment() {
                 price = "RM89"
             )
         )
-
-// 3. Paint Repair
-        homeMaintenanceArrayList.add(
-            HomeMaintenceModel(
+        allServicesArrayList.add(
+            AllServicesModel(
                 R.drawable.max_paint_repair,
                 "Paint Repair",
                 desc = "Fix paint chips and light scratches on body panels.",
@@ -60,10 +54,8 @@ class Service : Fragment() {
                 price = "RM39"
             )
         )
-
-// 4. Car Waxing
-        homeMaintenanceArrayList.add(
-            HomeMaintenceModel(
+        allServicesArrayList.add(
+            AllServicesModel(
                 R.drawable.max_car_waxing,
                 "Car Waxing",
                 desc = "Glossy finish with UV protection to seal your paint.",
@@ -71,10 +63,8 @@ class Service : Fragment() {
                 price = "RM49"
             )
         )
-
-// 5. Car Disinfection
-        homeMaintenanceArrayList.add(
-            HomeMaintenceModel(
+        allServicesArrayList.add(
+            AllServicesModel(
                 R.drawable.max_car_disinfection,
                 "Car Disinfection",
                 desc = "A/C vent sanitization and interior disinfection.",
@@ -82,10 +72,8 @@ class Service : Fragment() {
                 price = "RM29"
             )
         )
-
-// 6. Brand Maintenance
-        homeMaintenanceArrayList.add(
-            HomeMaintenceModel(
+        allServicesArrayList.add(
+            AllServicesModel(
                 R.drawable.max_brand_maintainance,
                 "Brand Maintenance",
                 desc = "Scheduled check & care for your vehicle brand.",
@@ -94,13 +82,10 @@ class Service : Fragment() {
             )
         )
 
+        allServicesAdapter = AllServicesAdapter(requireContext(), allServicesArrayList)
+        binding.allservices.layoutManager = LinearLayoutManager(requireContext())
+        binding.allservices.adapter = allServicesAdapter
 
-        homeMaintenanceAdapter = HomeMaintenanceAdapter(requireContext(),homeMaintenanceArrayList)
-        binding.homemaintenance.layoutManager = LinearLayoutManager(requireContext())
-        binding.homemaintenance.adapter = homeMaintenanceAdapter
         return binding.root
     }
-
-
-
 }

@@ -11,6 +11,18 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#90CAF9"
+            app:titleTextColor="@android:color/white"
+            app:navigationIconTint="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -22,7 +34,7 @@
             android:textSize="23sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/topAppBar" />
 
         <DatePicker
             android:id="@+id/datePicker"
@@ -33,7 +45,8 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            android:theme="@style/DateTimeAccentOverlay" />
 
 
         <TextView
@@ -56,7 +69,8 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            android:theme="@style/DateTimeAccentOverlay" />
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -67,11 +81,12 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:background="#F9E831"
+            android:background="#BBDEF6"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             android:text="Continue"
             android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

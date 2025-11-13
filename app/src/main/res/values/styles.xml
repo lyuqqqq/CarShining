@@ -3,6 +3,7 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
+
     <style name="ShapeAppearanceOverlay.CarShining">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>   <!-- 跟卡片的 cardCornerRadius 一致 -->
@@ -12,5 +13,31 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
+
+    <style name="DrawerHeaderTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="DrawerItemText" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MenuItemTextLikeAppBar" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#212121</item>
+    </style>
+
+    <style name="DateTimeAccentOverlay">
+        <item name="colorAccent">#4682B4</item>
+        <item name="colorControlActivated">#4682B4</item>
+        <item name="colorControlHighlight">#334682B4</item>
+    </style>
+
+
 </resources>
 

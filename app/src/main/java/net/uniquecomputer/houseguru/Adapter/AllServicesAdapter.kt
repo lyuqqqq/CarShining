@@ -1,19 +1,19 @@
 package net.uniquecomputer.houseguru.Adapter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import net.uniquecomputer.houseguru.Details
-import net.uniquecomputer.houseguru.Model.HomeMaintenceModel
+import net.uniquecomputer.houseguru.Model.AllServicesModel
 import net.uniquecomputer.houseguru.databinding.ItemServiceRowBinding
 
-class HomeMaintenanceAdapter(
+class AllServicesAdapter(
     private val context: Context,
-    private val homeMaintenanceArrayList: ArrayList<HomeMaintenceModel>
-) : RecyclerView.Adapter<HomeMaintenanceAdapter.ViewHolder>() {
+    private val homeMaintenanceArrayList: ArrayList<AllServicesModel>
+) : RecyclerView.Adapter<AllServicesAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemServiceRowBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -31,23 +31,25 @@ class HomeMaintenanceAdapter(
         val item = homeMaintenanceArrayList[position]
 
         holder.binding.imgRight.setImageResource(item.image)
-
         holder.binding.tvTitle.text = item.title
         holder.binding.tvDesc.text =
             if (item.desc.isNotBlank()) item.desc else "Professional mobile car care at your doorstep"
         holder.binding.tvMeta.text =
             "${item.duration.ifBlank { "45 min" }} · ${item.price.ifBlank { "$39" }}"
 
-        holder.itemView.setOnClickListener {
-            Toast.makeText(context, "Click", Toast.LENGTH_LONG).show()
-            val intent = Intent(context, Details::class.java)
-            intent.putExtra("title", item.title)
-            intent.putExtra("image", item.image)
-            context.startActivity(intent)
+        val openDetails: () -> Unit = {
+            val ctx = holder.itemView.context
+            val intent = Intent(ctx, Details::class.java).apply {
+                putExtra("title", item.title)
+                putExtra("image", item.image)
+            }
+            if (ctx !is Activity) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            ctx.startActivity(intent)
         }
 
-        holder.binding.btnBook.setOnClickListener {
-            Toast.makeText(context, "Booking: ${item.title}", Toast.LENGTH_SHORT).show()
-        }
+        holder.itemView.setOnClickListener { openDetails() }
+        holder.binding.btnBook.setOnClickListener { openDetails() }
     }
 }

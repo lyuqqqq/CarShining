@@ -1,6 +1,6 @@
 package net.uniquecomputer.houseguru.Model
 
-data class HomeMaintenceModel(
+data class AllServicesModel(
     val image: Int,
     val title: String,
     val desc: String = "",

@@ -10,6 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#90CAF9"
+            app:titleTextColor="@android:color/white"
+            app:navigationIconTint="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <TextView
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
@@ -21,7 +32,7 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/topAppBar" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button"
@@ -140,7 +151,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView19"
-            app:prefixText="+91">
+            app:prefixText="+60">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/number"
@@ -264,7 +275,7 @@
             android:textSize="14sp"
             android:fontFamily="@font/roboto_medium"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/topAppBar" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
