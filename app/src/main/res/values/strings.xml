@@ -9,7 +9,7 @@
     <string name="all_services">All Services</string>
     <string name="nav_open">Open navigation drawer</string>
     <string name="nav_close">Close navigation drawer</string>
-    <string name="description">.   Our Expert Service Provider Will Send Your a \n    Detail Based On Your Specific Cleaning \n    Requirements.</string>
-    <string name="description2">.  Please Ensure That You give As Much Detail \n   As Possible To Get Best Quote.</string>
-    <string name="note">You Will Receive an SMS/Email Confirming The\nConfirmation Of Booking</string>
+    <string name="description">Our expert service provider will send your a detail based on your selected service requirements.</string>
+    <string name="description2">Please ensure that you give as much detail as possible to get best quote.</string>
+    <string name="note">You will receive an SMS/email confirming the confirmation Of booking.</string>
 </resources>

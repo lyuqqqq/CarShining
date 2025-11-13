@@ -1,9 +1,9 @@
 package net.uniquecomputer.houseguru
 import android.content.Intent
-import android.content.pm.PackageManager
+import java.text.SimpleDateFormat
+import java.util.Locale
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
 import net.uniquecomputer.houseguru.databinding.ActivityBookingSuccessfullyBinding
 
 class BookingSuccessfully : AppCompatActivity() {
@@ -25,23 +25,32 @@ class BookingSuccessfully : AppCompatActivity() {
         binding.orderiddetails.text = orderid
 
         val date = intent.getStringExtra("date")
+        val time = intent.getStringExtra("time")
         val image = intent.getIntExtra("image", 0)
+
+        binding.datedetails.text = date ?: "-"
+        binding.timedetails.text = formatTimeToAmPm(time)
 
 
         binding.done.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            val bundle = Bundle()
-
-            //send data to Booking.kt fragment
-            bundle.putString("title", title)
-            bundle.putString("date", date)
-            bundle.putString("image", image.toString())
-            bundle.putString("orderid", orderid)
-            intent.putExtras(bundle)
-            finishAffinity()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
-
+            finish()
         }
 
     }
+    private fun formatTimeToAmPm(time: String?): String {
+        if (time.isNullOrBlank()) return "-"
+
+        return try {
+            val inputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val date = inputFormat.parse(time)
+            if (date != null) outputFormat.format(date) else time
+        } catch (e: Exception) {
+            time
+        }
+    }
+
 }
