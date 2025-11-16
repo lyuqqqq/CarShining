@@ -13,14 +13,15 @@
         android:icon="@drawable/service_vector"/>
 
     <item
-        android:id="@+id/Wallet"
-        android:enabled="true"
-        android:title="Wallet"
-        android:icon="@drawable/baseline_account_balance_wallet_24"/>
-
-    <item
         android:id="@+id/Booking"
         android:enabled="true"
         android:title="Booking"
         android:icon="@drawable/booking"/>
+
+    <item
+        android:id="@+id/Profile"
+        android:enabled="true"
+        android:title="Profile"
+        android:icon="@drawable/profile"/>
+
 </menu>

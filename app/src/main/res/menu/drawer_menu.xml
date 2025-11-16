@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_about"   android:title="About Us" android:icon="@drawable/ic_info"/>
-        <item android:id="@+id/nav_contact" android:title="Contact"  android:icon="@drawable/ic_contact_mail"/>
-        <item android:id="@+id/nav_settings" android:title="Settings" android:icon="@drawable/ic_settings"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_about"
+            android:title="About Us"
+            app:actionLayout="@layout/menu_item_arrow_right" />
+
+        <item
+            android:id="@+id/nav_faqs"
+            android:title="FAQs"
+            app:actionLayout="@layout/menu_item_arrow_right" />
+
+        <item
+            android:id="@+id/nav_terms"
+            android:title="Terms &amp; Conditions"
+            app:actionLayout="@layout/menu_item_arrow_right" />
+
+        <item
+            android:id="@+id/nav_contact_us"
+            android:title="Contact Us"
+            app:actionLayout="@layout/menu_item_arrow_right" />
+
+        <item
+            android:id="@+id/nav_blank"
+            android:title=""
+            android:enabled="false" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout"
+            app:actionLayout="@layout/menu_item_arrow_right" />
+
     </group>
 </menu>
+

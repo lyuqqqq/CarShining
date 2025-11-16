@@ -19,32 +19,22 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/success_green_check" />
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/gray91"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/animationView" />
-
     <TextView
         android:id="@+id/textView20"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:text="1 Item Booked Successfully"
+        android:layout_marginEnd="24dp"
+        android:text="Payment Successfully"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="24sp"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/animationView" />
 
-    <!-- 详情卡片：Booking ID, Service, Date, Time, Status -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView4"
         android:layout_width="match_parent"
@@ -120,6 +110,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
 
             <TextView
+                android:id="@+id/textViewPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Price"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
+
+            <TextView
                 android:id="@+id/textView24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -132,7 +136,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewTime"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPrice"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
             <TextView
@@ -157,7 +161,7 @@
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Deep \n Cleaning"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -194,6 +198,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/datedetails" />
 
             <TextView
+                android:id="@+id/pricedetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/roboto_bold"
+                tools:text="RM89"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/timedetails" />
+
+            <TextView
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -206,7 +224,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/timedetails"
+                app:layout_constraintTop_toBottomOf="@+id/pricedetails"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -224,7 +242,6 @@
         android:text="Done"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textStyle="bold"
         android:textSize="20sp"
         app:cornerRadius="12dp"
         app:backgroundTint="#B7D4B9"

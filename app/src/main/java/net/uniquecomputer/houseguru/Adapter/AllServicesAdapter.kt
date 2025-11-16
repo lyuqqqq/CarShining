@@ -35,13 +35,14 @@ class AllServicesAdapter(
         holder.binding.tvDesc.text =
             if (item.desc.isNotBlank()) item.desc else "Professional mobile car care at your doorstep"
         holder.binding.tvMeta.text =
-            "${item.duration.ifBlank { "45 min" }} · ${item.price.ifBlank { "$39" }}"
+            "${item.duration.ifBlank { "45 min" }} · ${item.price.ifBlank { "RM39" }}"
 
         val openDetails: () -> Unit = {
             val ctx = holder.itemView.context
             val intent = Intent(ctx, Details::class.java).apply {
                 putExtra("title", item.title)
                 putExtra("image", item.image)
+                putExtra("price", item.price)
             }
             if (ctx !is Activity) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

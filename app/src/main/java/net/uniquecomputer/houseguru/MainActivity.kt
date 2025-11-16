@@ -1,5 +1,6 @@
 package net.uniquecomputer.houseguru
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -74,15 +75,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     setHomeMode(false)
                     true
                 }
-                R.id.Wallet -> {
-                    replaceFragment(Wallet())
-                    setBoldTitle("Wallet")
-                    setHomeMode(false)
-                    true
-                }
                 R.id.Booking -> {
                     replaceFragment(Booking())
                     setBoldTitle("My Bookings")
+                    setHomeMode(false)
+                    true
+                }
+                R.id.Profile -> {
+                    replaceFragment(Profile())
+                    setBoldTitle("Profile")
                     setHomeMode(false)
                     true
                 }
@@ -120,13 +121,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: android.view.MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_about -> {
-                // TODO: implement
+                startActivity(Intent(this, AboutUsActivity::class.java))
             }
-            R.id.nav_contact -> {
-                // TODO: implement
+            R.id.nav_faqs -> {
+                startActivity(Intent(this, FaqsActivity::class.java))
             }
-            R.id.nav_settings -> {
-                // TODO: implement
+            R.id.nav_terms -> {
+                startActivity(Intent(this, TermsActivity::class.java))
+            }
+            R.id.nav_contact_us -> {
+                val intent = Intent(this, CustomerServiceActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_logout -> {
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                }
+                startActivity(intent)
             }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -146,6 +157,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
+    }
+
+    fun openServiceScreen() {
+        binding.bottomNavigation.selectedItemId = R.id.Service
+    }
+
+    fun openBookingScreen() {
+        binding.bottomNavigation.selectedItemId = R.id.Booking
+    }
+
+    fun openWalletScreen() {
+        val intent = Intent(this, Wallet::class.java)
+        startActivity(intent)
     }
 
     private fun setBoldTitle(text: String) {

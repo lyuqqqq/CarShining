@@ -2,6 +2,7 @@ package net.uniquecomputer.houseguru
 import net.uniquecomputer.houseguru.Adapter.QuickServiceAdapter
 import net.uniquecomputer.houseguru.Model.QuickService
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,7 +27,6 @@ class Home : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater,container,false)
         mostusedarraylist = ArrayList()
         mostusedarraylist.add(MostUseModel(R.drawable.max_discont_cleaning,"Discount Cleaning"))
@@ -38,7 +38,7 @@ class Home : Fragment() {
 
         mostUseAdapter = MostUseAdapter(requireContext(),mostusedarraylist)
         binding.mostusehomerv.layoutManager = GridLayoutManager(requireContext(),2)
-//        binding.mostusehomerv.layoutManager = LinearLayoutManager(requireContext())
+
         binding.mostusehomerv.adapter = mostUseAdapter
 
         val quickList = listOf(
@@ -52,13 +52,19 @@ class Home : Fragment() {
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
                 requireContext(), androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false
             )
-            adapter = QuickServiceAdapter(quickList) { item ->
+         adapter = QuickServiceAdapter(quickList) { item ->
                 when (item.label) {
-                    "Discount Wash" -> { /* TODO: navigate to discount list */ }
-                    "Premium Wash"  -> { /* TODO: navigate to premium list */ }
-                    "Paint Repair"  -> { /* TODO: navigate to paint repair */ }
+                    "Discount Wash" -> {
+                        openDetailsFromHome("Discount Cleaning", R.drawable.max_discont_cleaning)
+                    }
+                    "Premium Wash"  -> {
+                        openDetailsFromHome("Premium Cleaning", R.drawable.max_premium_cleaning)
+                    }
+                    "Paint Repair"  -> {
+                        openDetailsFromHome("Paint Repair", R.drawable.max_paint_repair)
+                    }
                     "All Services"  -> {
-
+                        (activity as? MainActivity)?.openServiceScreen()
                     }
                 }
             }
@@ -75,6 +81,15 @@ class Home : Fragment() {
         carousel.addData(CarouselItem(R.drawable.slidethree))
         carousel.addData(CarouselItem(R.drawable.slidefour))
 
+    }
+
+    private fun openDetailsFromHome(title: String, imageRes: Int) {
+        val ctx = requireContext()
+        val intent = Intent(ctx, Details::class.java).apply {
+            putExtra("title", title)
+            putExtra("image", imageRes)
+        }
+        startActivity(intent)
     }
 
 

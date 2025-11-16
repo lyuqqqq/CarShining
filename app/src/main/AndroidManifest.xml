@@ -26,8 +26,24 @@
         </activity>
 
         <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".AboutUsActivity"
+            android:exported="false" />
+
+        <activity android:name=".FaqsActivity" />
+
+        <activity android:name=".TermsActivity" />
 
         <activity
             android:name=".Details"
@@ -39,6 +55,24 @@
 
         <activity
             android:name=".DateandTime"
+            android:exported="false" />
+
+        <activity
+            android:name=".Wallet"
+            android:exported="false" />
+
+        <activity
+            android:name=".TopUpSuccessActivity"
+            android:exported="false" />
+
+        <activity android:name=".AddressActivity" />
+
+        <activity android:name=".EditProfileActivity" />
+
+        <activity android:name=".CarManagementActivity" />
+
+        <activity
+            android:name=".CustomerServiceActivity"
             android:exported="false" />
 
         <meta-data
