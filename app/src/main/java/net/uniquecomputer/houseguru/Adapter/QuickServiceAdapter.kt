@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import net.uniquecomputer.houseguru.R
 import net.uniquecomputer.houseguru.Model.QuickService
+
 class QuickServiceAdapter(
     private val items: List<QuickService>,
     private val onClick: (QuickService) -> Unit

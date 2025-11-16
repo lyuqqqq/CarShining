@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import net.uniquecomputer.houseguru.Details
-import net.uniquecomputer.houseguru.Home
 import net.uniquecomputer.houseguru.Model.MostUseModel
 import net.uniquecomputer.houseguru.databinding.SampledataBinding
 
