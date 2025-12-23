@@ -15,6 +15,7 @@ class Profile : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    private lateinit var dbHelper: AppDatabaseHelper
 
     companion object {
         private const val CUSTOMER_SERVICE_NUMBER = "+60 12-345 6789"
@@ -26,6 +27,8 @@ class Profile : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+        dbHelper = AppDatabaseHelper(requireContext())
 
         refreshProfileHeader()
 
@@ -73,24 +76,30 @@ class Profile : Fragment() {
     }
 
     private fun refreshProfileHeader() {
-        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val sessionPrefs = requireContext()
+            .getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        val userId = sessionPrefs.getInt("current_user_id", -1)
 
-        val name = prefs.getString("user_name", "Car Shining User")
-        val email = prefs.getString("user_email", "user@example.com")
+        if (userId == -1) {
+            binding.textUserName.text = "Car Shining User"
+            binding.textUserEmail.text = "user@example.com"
+            return
+        }
 
-        binding.textUserName.text = name
-        binding.textUserEmail.text = email
-    }
+        val user = dbHelper.getUserById(userId)
 
-    private fun dialCustomerService() {
-        val uri = Uri.parse("tel:$CUSTOMER_SERVICE_NUMBER")
-        val intent = Intent(Intent.ACTION_DIAL, uri)
-        if (intent.resolveActivity(requireContext().packageManager) != null) {
-            startActivity(intent)
+        if (user != null) {
+            binding.textUserName.text =
+                if (user.name.isNotBlank()) user.name else "Car Shining User"
+
+            binding.textUserEmail.text =
+                if (user.email.isNotBlank()) user.email else "user@example.com"
         } else {
-            Toast.makeText(requireContext(), "No dialer app found", Toast.LENGTH_SHORT).show()
+            binding.textUserName.text = "Car Shining User"
+            binding.textUserEmail.text = "user@example.com"
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

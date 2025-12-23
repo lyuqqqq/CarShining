@@ -93,6 +93,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/card_date_time" />
 
+        <TextView
+            android:id="@+id/textAddAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:text="Other Addresses"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#42ABF4"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@id/textView16" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardAddress1"
             android:layout_width="0dp"

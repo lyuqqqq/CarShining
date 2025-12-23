@@ -10,6 +10,7 @@ import java.util.Locale
 class BookingSuccessfully : AppCompatActivity() {
 
     private lateinit var binding: ActivityBookingSuccessfullyBinding
+    private lateinit var dbHelper: AppDatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +18,11 @@ class BookingSuccessfully : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.show()
+
+        dbHelper = AppDatabaseHelper(this)
+
+        val sessionPrefs = getSharedPreferences("user_session", MODE_PRIVATE)
+        val currentUserId = sessionPrefs.getInt("current_user_id", -1)
 
         val title = intent.getStringExtra("title")
         supportActionBar?.title = title
@@ -48,24 +54,47 @@ class BookingSuccessfully : AppCompatActivity() {
         val displayDate = formatDateToDisplay(rawDate)
         val displayTime = formatTimeToAmPm(rawTime)
 
-        binding.datedetails.text = if (displayDate.isBlank()) "-" else displayDate
+        binding.datedetails.text =
+            if (displayDate.isBlank()) "-" else displayDate
         binding.timedetails.text = displayTime
         binding.pricedetails.text = price
 
-        val sharedPref = getSharedPreferences("booking_prefs", MODE_PRIVATE)
+        if (currentUserId != -1) {
+            val serviceId = dbHelper.insertService(
+                userId = currentUserId,
+                title = serviceName,
+                description = "",
+                date = rawDate ?: "",
+                time = rawTime ?: "",
+                price = price,
+                imageRes = image,
+                status = "incomplete"
+            ).toInt()
 
+            val contactName = intent.getStringExtra("contact_name") ?: ""
+            val contactNumber = intent.getStringExtra("contact_number") ?: ""
+            val addressIndex = intent.getIntExtra("address_index", 1)
+
+            getSharedPreferences("details_prefs", MODE_PRIVATE)
+                .edit()
+                .putString("contact_name_${serviceId}", contactName)
+                .putString("contact_number_${serviceId}", contactNumber)
+                .putInt("address_index_${serviceId}", addressIndex)
+                .apply()
+
+        }
+
+        val sharedPref = getSharedPreferences("booking_prefs", MODE_PRIVATE)
         val count = sharedPref.getInt("incomplete_count", 0)
         val index = count
 
         sharedPref.edit().apply {
             putInt("incomplete_count", count + 1)
-
             putString("service_name_$index", serviceName)
             putString("date_$index", displayDate)
             putString("time_$index", displayTime)
             putString("price_$index", price)
             putInt("imageRes_$index", image)
-
             apply()
         }
 
@@ -96,7 +125,6 @@ class BookingSuccessfully : AppCompatActivity() {
                     return outputFormat.format(parsed)
                 }
             } catch (_: Exception) {
-
             }
         }
 

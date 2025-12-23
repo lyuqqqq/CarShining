@@ -21,6 +21,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Address 1 -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardAddress1"
             android:layout_width="0dp"
@@ -36,62 +37,85 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="24dp">
 
-            <LinearLayout
+                <LinearLayout
+                    android:id="@+id/layoutAddress1Content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_toStartOf="@id/imageDelete1"
+                    android:layout_toLeftOf="@id/imageDelete1"
+                    android:orientation="vertical"
+                    android:layout_alignParentStart="true">
 
-                    <RadioButton
-                        android:id="@+id/radioAddress1"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="#6EBFF8" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioAddress1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="#6EBFF8" />
+
+                        <TextView
+                            android:id="@+id/textTitle1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Xiamen University Malaysia"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:textColor="@android:color/black" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/textTitle1"
-                        android:layout_width="0dp"
+                        android:id="@+id/textPhone1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="4dp"
-                        android:text="Xiamen University Malaysia"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:textColor="@android:color/black" />
+                        android:layout_marginStart="56dp"
+                        android:layout_marginTop="4dp"
+                        android:text="(+60) 178751741"
+                        android:textSize="14sp"
+                        android:textColor="#606060" />
+
+                    <TextView
+                        android:id="@+id/textAddress1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Jalan Sunsuria, Bandar Sunsuria"
+                        android:textSize="14sp"
+                        android:textColor="#808080" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textPhone1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginTop="4dp"
-                    android:text="(60) 11-2423-4875"
-                    android:textSize="14sp"
-                    android:textColor="#606060" />
+                <ImageView
+                    android:id="@+id/imageDelete1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="4dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_delete"
+                    android:contentDescription="Delete address"
+                    android:clickable="true"
+                    android:focusable="true" />
 
-                <TextView
-                    android:id="@+id/textAddress1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginTop="4dp"
-                    android:text="Jalan Sunsuria, Bandar Sunsuria"
-                    android:textSize="14sp"
-                    android:textColor="#808080" />
-
-            </LinearLayout>
+            </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Address 2 -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardAddress2"
             android:layout_width="0dp"
@@ -99,7 +123,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             app:cardCornerRadius="18dp"
             app:cardUseCompatPadding="true"
             app:cardElevation="3dp"
@@ -108,61 +131,196 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="24dp">
 
-            <LinearLayout
+                <LinearLayout
+                    android:id="@+id/layoutAddress2Content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_toStartOf="@id/imageDelete2"
+                    android:layout_toLeftOf="@id/imageDelete2"
+                    android:orientation="vertical"
+                    android:layout_alignParentStart="true">
 
-                    <RadioButton
-                        android:id="@+id/radioAddress2"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:buttonTint="#6EBFF8" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioAddress2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="#6EBFF8" />
+
+                        <TextView
+                            android:id="@+id/textTitle2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Bell Suites"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:textColor="@android:color/black" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/textTitle2"
-                        android:layout_width="0dp"
+                        android:id="@+id/textPhone2"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="4dp"
-                        android:text="Bell Suites"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:textColor="@android:color/black" />
+                        android:layout_marginStart="56dp"
+                        android:layout_marginTop="4dp"
+                        android:text="(+60) 159518223"
+                        android:textSize="14sp"
+                        android:textColor="#606060" />
+
+                    <TextView
+                        android:id="@+id/textAddress2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Bell Suites, Kota Warisan"
+                        android:textSize="14sp"
+                        android:textColor="#808080" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textPhone2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginTop="4dp"
-                    android:text="(60) 10-1234-5678"
-                    android:textSize="14sp"
-                    android:textColor="#606060" />
+                <ImageView
+                    android:id="@+id/imageDelete2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="4dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_delete"
+                    android:contentDescription="Delete address"
+                    android:clickable="true"
+                    android:focusable="true" />
 
-                <TextView
-                    android:id="@+id/textAddress2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginTop="4dp"
-                    android:text="Bell Suites, Kota Warisan"
-                    android:textSize="14sp"
-                    android:textColor="#808080" />
-
-            </LinearLayout>
+            </RelativeLayout>
         </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardAddressCustom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="18dp"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="3dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@android:color/white"
+            app:layout_constraintTop_toBottomOf="@id/cardAddress2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="24dp">
+
+                <LinearLayout
+                    android:id="@+id/layoutAddressCustomContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/imageDeleteCustom"
+                    android:layout_toLeftOf="@id/imageDeleteCustom"
+                    android:orientation="vertical"
+                    android:layout_alignParentStart="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioAddressCustom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="#6EBFF8" />
+
+                        <TextView
+                            android:id="@+id/textTitleCustom"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Custom Address"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:textColor="@android:color/black" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textPhoneCustom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginTop="4dp"
+                        android:text="(60) 00-0000-0000"
+                        android:textSize="14sp"
+                        android:textColor="#606060" />
+
+                    <TextView
+                        android:id="@+id/textAddressCustom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Your custom address here"
+                        android:textSize="14sp"
+                        android:textColor="#808080" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageDeleteCustom"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="4dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_delete"
+                    android:contentDescription="Delete address"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonAddNewAddress"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="+ Add New Address"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            app:cornerRadius="24dp"
+            app:backgroundTint="#42ABF4"
+            app:layout_constraintTop_toBottomOf="@id/cardAddressCustom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

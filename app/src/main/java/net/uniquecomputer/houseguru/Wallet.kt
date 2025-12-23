@@ -19,10 +19,14 @@ class Wallet : AppCompatActivity() {
     private lateinit var amountEditText: EditText
     private lateinit var addMoneyButton: Button
 
+    private lateinit var dbHelper: AppDatabaseHelper
+    private var currentUserId: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wallet)
 
+        // ---------- Top App Bar ----------
         val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
         setSupportActionBar(toolbar)
 
@@ -35,6 +39,11 @@ class Wallet : AppCompatActivity() {
         toolbar.navigationIcon?.setTint(Color.WHITE)
         toolbar.setNavigationOnClickListener { finish() }
 
+        dbHelper = AppDatabaseHelper(this)
+
+        val sessionPrefs = getSharedPreferences("user_session", MODE_PRIVATE)
+        currentUserId = sessionPrefs.getInt("current_user_id", -1)
+
         val userPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
         val userName = userPref.getString("user_name", "Wallet")
         val titleView = findViewById<TextView>(R.id.textWalletTitle)
@@ -44,8 +53,7 @@ class Wallet : AppCompatActivity() {
         amountEditText = findViewById(R.id.editTextNumber)
         addMoneyButton = findViewById(R.id.buttonAddMoney)
 
-        val walletPref = getSharedPreferences("wallet_prefs", MODE_PRIVATE)
-        val currentBalance = walletPref.getInt("wallet_balance", 100)
+        val currentBalance = loadBalanceFromDb()
         balanceTextView.text = "RM $currentBalance"
 
         addMoneyButton.setOnClickListener {
@@ -62,13 +70,15 @@ class Wallet : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val pref = getSharedPreferences("wallet_prefs", MODE_PRIVATE)
-            val current = pref.getInt("wallet_balance", 100)
+            if (currentUserId == -1) {
+                Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val current = loadBalanceFromDb()
             val newBalance = current + amount
 
-            pref.edit()
-                .putInt("wallet_balance", newBalance)
-                .apply()
+            dbHelper.updateWalletBalance(currentUserId, newBalance)
 
             val intent = Intent(this, TopUpSuccessActivity::class.java).apply {
                 putExtra("added_amount", amount)
@@ -81,14 +91,18 @@ class Wallet : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val walletPref = getSharedPreferences("wallet_prefs", MODE_PRIVATE)
-        val currentBalance = walletPref.getInt("wallet_balance", 100)
-
-        if (::balanceTextView.isInitialized) {
+        if (currentUserId != -1 && ::balanceTextView.isInitialized) {
+            val currentBalance = loadBalanceFromDb()
             balanceTextView.text = "RM $currentBalance"
         }
+
         if (::amountEditText.isInitialized) {
             amountEditText.text?.clear()
         }
+    }
+
+    private fun loadBalanceFromDb(): Int {
+        if (currentUserId == -1) return 0
+        return dbHelper.getWalletBalance(currentUserId)
     }
 }

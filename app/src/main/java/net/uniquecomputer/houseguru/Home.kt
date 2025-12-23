@@ -20,9 +20,6 @@ class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var mostusedarraylist : ArrayList<MostUseModel>
     lateinit var mostUseAdapter: MostUseAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

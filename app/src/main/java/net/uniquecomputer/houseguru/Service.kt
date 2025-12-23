@@ -16,10 +16,6 @@ class Service : Fragment() {
     lateinit var allServicesAdapter: AllServicesAdapter
     private lateinit var allServicesArrayList: ArrayList<AllServicesModel>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -20,10 +20,14 @@ class CarManagementActivity : AppCompatActivity() {
     private lateinit var dropdownCarColor: AutoCompleteTextView
     private lateinit var buttonSaveCar: MaterialButton
 
+    private lateinit var dbHelper: AppDatabaseHelper
+    private var currentUserId: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_car_management)
 
+        // ---------- Top App Bar ----------
         val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
         setSupportActionBar(toolbar)
 
@@ -35,6 +39,11 @@ class CarManagementActivity : AppCompatActivity() {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         toolbar.navigationIcon?.setTint(Color.WHITE)
         toolbar.setNavigationOnClickListener { finish() }
+
+        dbHelper = AppDatabaseHelper(this)
+
+        val sessionPrefs = getSharedPreferences("user_session", MODE_PRIVATE)
+        currentUserId = sessionPrefs.getInt("current_user_id", -1)
 
         editPlate = findViewById(R.id.editPlate)
         dropdownCarType = findViewById(R.id.dropdownCarType)
@@ -51,10 +60,14 @@ class CarManagementActivity : AppCompatActivity() {
             ArrayAdapter(this, android.R.layout.simple_list_item_1, carColors)
         )
 
-        val prefs = getSharedPreferences("car_prefs", MODE_PRIVATE)
-        editPlate.setText(prefs.getString("plate", ""))
-        dropdownCarType.setText(prefs.getString("type", ""), false)
-        dropdownCarColor.setText(prefs.getString("color", ""), false)
+        if (currentUserId != -1) {
+            val carInfo = dbHelper.getCarInfoForUser(currentUserId)
+            editPlate.setText(carInfo?.plate ?: "")
+            dropdownCarType.setText(carInfo?.type ?: "", false)
+            dropdownCarColor.setText(carInfo?.color ?: "", false)
+        } else {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+        }
 
         buttonSaveCar.setOnClickListener {
             val plate = editPlate.text?.toString()?.trim() ?: ""
@@ -74,12 +87,16 @@ class CarManagementActivity : AppCompatActivity() {
                     Toast.makeText(this, "Please select car color", Toast.LENGTH_SHORT).show()
                     dropdownCarColor.requestFocus()
                 }
+                currentUserId == -1 -> {
+                    Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+                }
                 else -> {
-                    prefs.edit()
-                        .putString("plate", plate)
-                        .putString("type", type)
-                        .putString("color", color)
-                        .apply()
+                    dbHelper.updateCarInfoForUser(
+                        userId = currentUserId,
+                        plate = plate,
+                        type = type,
+                        color = color
+                    )
 
                     Toast.makeText(this, "Car information saved", Toast.LENGTH_SHORT).show()
                     finish()

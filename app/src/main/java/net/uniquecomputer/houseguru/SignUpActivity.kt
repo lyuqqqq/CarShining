@@ -2,12 +2,14 @@ package net.uniquecomputer.houseguru
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import net.uniquecomputer.houseguru.databinding.ActivitySignUpBinding
 
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
+    private lateinit var dbHelper: AppDatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,6 +17,8 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.hide()
+
+        dbHelper = AppDatabaseHelper(this)
 
         binding.buttonSignUp.setOnClickListener {
             val name = binding.editName.text?.toString()?.trim().orEmpty()
@@ -41,21 +45,30 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
 
-            val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
-            prefs.edit().apply {
-                putString("name", name)
-                putString("phone", phone)
-                putString("email", email)
-                putString("password", password)
-                putBoolean("has_user", true)
-                apply()
+            if (dbHelper.isPhoneRegistered(phone)) {
+                binding.editPhone.error = "This phone is already registered"
+                return@setOnClickListener
             }
 
-            val intent = Intent(this, LoginActivity::class.java).apply {
-                putExtra("phone", phone)
+            val rowId = dbHelper.insertUser(
+                name = name,
+                phone = phone,
+                email = email,
+                password = password,
+                role = "user"
+            )
+
+            if (rowId == -1L) {
+                Toast.makeText(this, "Sign up failed, please try again", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Sign up successful!", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    putExtra("phone", phone)
+                }
+                startActivity(intent)
+                finish()
             }
-            startActivity(intent)
-            finish()
         }
 
         binding.textLoginLink.setOnClickListener {

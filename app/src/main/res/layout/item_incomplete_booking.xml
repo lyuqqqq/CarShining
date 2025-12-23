@@ -3,67 +3,105 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="96dp"
-    android:layout_marginBottom="6dp"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="12dp"
     app:cardUseCompatPadding="true"
-    app:cardElevation="0dp"
+    app:cardElevation="1dp"
     app:cardBackgroundColor="@android:color/white">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp">
+        android:padding="12dp">
 
         <ImageView
             android:id="@+id/imageIncompleteService"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:src="@drawable/booking"
             android:scaleType="centerCrop"
-            android:layout_marginEnd="16dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <LinearLayout
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnUpdateBooking"
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="4dp"
+            app:cornerRadius="18dp"
+            app:backgroundTint="#42ABF4"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDeleteBooking"
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="4dp"
+            android:layout_marginTop="8dp"
+            app:cornerRadius="18dp"
+            app:backgroundTint="#E57373"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnUpdateBooking" />
+
+
+        <TextView
+            android:id="@+id/textIncompleteServiceName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:text="Service name"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:lineSpacingExtra="2dp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/imageIncompleteService"
+            app:layout_constraintEnd_toStartOf="@id/btnUpdateBooking"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textIncompleteServiceName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Service name"
-                android:textAllCaps="false"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@android:color/black"
-                android:lineSpacingExtra="2dp" />
-
-            <TextView
-                android:id="@+id/textIncompleteDateTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sat, 16 Nov · 10:30 AM"
-                android:textSize="14sp"
-                android:textColor="#606060"
-                android:layout_marginTop="6dp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/textIncompleteDateTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Thu, 23 Oct · 4:00 PM"
+            android:textSize="14sp"
+            android:textColor="#606060"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/imageIncompleteService"
+            app:layout_constraintEnd_toStartOf="@id/btnUpdateBooking"
+            app:layout_constraintTop_toBottomOf="@id/textIncompleteServiceName" />
 
         <TextView
             android:id="@+id/textIncompletePrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RM89.00"
+            android:text="RM89"
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@android:color/black"
-            android:layout_marginStart="12dp" />
-    </LinearLayout>
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/imageIncompleteService"
+            app:layout_constraintTop_toBottomOf="@id/textIncompleteDateTime"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

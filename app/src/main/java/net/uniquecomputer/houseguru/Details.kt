@@ -7,7 +7,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import net.uniquecomputer.houseguru.databinding.ActivityDetailsBinding
-import java.util.UUID
+import java.text.SimpleDateFormat
+import java.util.Locale
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.graphics.Typeface
@@ -20,6 +21,15 @@ class Details : AppCompatActivity() {
     private var selectedDate: String? = null
     private var selectedTime: String? = null
 
+    private var editingServiceId: Int = -1
+    private var isEditMode: Boolean = false
+
+    private lateinit var dbHelper: AppDatabaseHelper
+
+    private var serviceTitle: String = ""
+    private var servicePrice: String = ""
+    private var serviceImageRes: Int = 0
+
     private val pickDateTime = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -31,43 +41,32 @@ class Details : AppCompatActivity() {
         }
     }
 
+    private val pickAddress = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val data = result.data ?: return@registerForActivityResult
+
+            val title = data.getStringExtra("title") ?: ""
+            val phone = data.getStringExtra("phone") ?: ""
+            val address = data.getStringExtra("address") ?: ""
+
+            binding.radioAddress2.isChecked = true
+            binding.radioAddress1.isChecked = false
+            updateAddressCardStyles()
+
+            if (title.isNotBlank()) binding.textTitle2.text = title
+            if (phone.isNotBlank()) binding.textPhone2.text = phone
+            if (address.isNotBlank()) binding.textAddress2.text = address
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailsBinding.inflate(layoutInflater)
-        // 默认选中第一个地址
-        binding.radioAddress1.isChecked = true
-        binding.radioAddress2.isChecked = false
-        updateAddressCardStyles()
-        binding.cardAddress1.setOnClickListener {
-            binding.radioAddress1.isChecked = true
-            binding.radioAddress2.isChecked = false
-            updateAddressCardStyles()
-        }
-
-        binding.radioAddress1.setOnClickListener {
-            binding.radioAddress1.isChecked = true
-            binding.radioAddress2.isChecked = false
-            updateAddressCardStyles()
-        }
-
-        binding.cardAddress2.setOnClickListener {
-            binding.radioAddress2.isChecked = true
-            binding.radioAddress1.isChecked = false
-            updateAddressCardStyles()
-        }
-
-        binding.radioAddress2.setOnClickListener {
-            binding.radioAddress2.isChecked = true
-            binding.radioAddress1.isChecked = false
-            updateAddressCardStyles()
-        }
-
         setContentView(binding.root)
 
-        binding.buttonAddMoneyWallet.setOnClickListener {
-            val intent = Intent(this, Wallet::class.java)
-            startActivity(intent)
-        }
+        dbHelper = AppDatabaseHelper(this)
 
         setSupportActionBar(binding.topAppBar)
         binding.topAppBar.setNavigationIcon(R.drawable.ic_arrow_back)
@@ -75,44 +74,103 @@ class Details : AppCompatActivity() {
         binding.topAppBar.setNavigationOnClickListener { finish() }
         supportActionBar?.show()
 
-        val title = intent.getStringExtra("title")
-        val bold = SpannableString(title ?: "")
-        bold.setSpan(StyleSpan(Typeface.BOLD), 0, bold.length, 0)
-        supportActionBar?.title = bold
+        binding.radioAddress1.isChecked = true
+        binding.radioAddress2.isChecked = false
+        updateAddressCardStyles()
 
-        val explicitPrice = intent.getStringExtra("price")
-
-        val price = if (!explicitPrice.isNullOrBlank()) {
-            explicitPrice
-        } else {
-            when {
-                title?.contains("Discount", ignoreCase = true) == true -> "RM19"
-                title?.contains("Premium", ignoreCase = true) == true -> "RM89"
-                title?.contains("Paint", ignoreCase = true) == true -> "RM39"
-                title?.contains("Wax", ignoreCase = true) == true -> "RM49"
-                title?.contains("Disinfection", ignoreCase = true) == true -> "RM29"
-                title?.contains("Brand", ignoreCase = true) == true -> "RM69"
-                else -> ""
-            }
+        binding.cardAddress1.setOnClickListener {
+            binding.radioAddress1.isChecked = true
+            binding.radioAddress2.isChecked = false
+            updateAddressCardStyles()
+        }
+        binding.radioAddress1.setOnClickListener {
+            binding.radioAddress1.isChecked = true
+            binding.radioAddress2.isChecked = false
+            updateAddressCardStyles()
+        }
+        binding.cardAddress2.setOnClickListener {
+            binding.radioAddress2.isChecked = true
+            binding.radioAddress1.isChecked = false
+            updateAddressCardStyles()
+        }
+        binding.radioAddress2.setOnClickListener {
+            binding.radioAddress2.isChecked = true
+            binding.radioAddress1.isChecked = false
+            updateAddressCardStyles()
         }
 
-        if (price.isNotBlank()) {
+        binding.textAddAddress.setOnClickListener {
+            val i = Intent(this, AddressActivity::class.java)
+            pickAddress.launch(i)
+        }
+
+        binding.buttonAddMoneyWallet.setOnClickListener {
+            startActivity(Intent(this, Wallet::class.java))
+        }
+
+        val sessionPrefs = getSharedPreferences("user_session", MODE_PRIVATE)
+        currentUserId = sessionPrefs.getInt("current_user_id", -1)
+
+        editingServiceId = intent.getIntExtra("service_id", -1)
+        val mode = intent.getStringExtra("mode")
+        isEditMode = (mode == "edit" && editingServiceId != -1)
+
+        if (isEditMode) {
+            val service = dbHelper.getServiceById(editingServiceId)
+            if (service == null) {
+                Toast.makeText(this, "Service not found", Toast.LENGTH_SHORT).show()
+                finish()
+                return
+            }
+
+            serviceTitle = service.title
+            servicePrice = service.price
+            serviceImageRes = service.imageRes
+
+            val bold = SpannableString(serviceTitle)
+            bold.setSpan(StyleSpan(Typeface.BOLD), 0, bold.length, 0)
+            supportActionBar?.title = bold
+
+            selectedDate = service.date
+            selectedTime = service.time
+            updateDateTimeUi()
+
+            binding.buttonAddMoneyWallet.visibility = View.GONE
+            binding.continueDetails.text = "Save Changes"
+
+            loadContactInfo()
+        } else {
+            val title = intent.getStringExtra("title") ?: ""
+            serviceTitle = title
+            servicePrice = intent.getStringExtra("price") ?: ""
+            serviceImageRes = intent.getIntExtra("image", 0)
+
+            val bold = SpannableString(serviceTitle)
+            bold.setSpan(StyleSpan(Typeface.BOLD), 0, bold.length, 0)
+            supportActionBar?.title = bold
+
+            selectedDate = intent.getStringExtra("date")
+            selectedTime = intent.getStringExtra("time")
+            updateDateTimeUi()
+
+            binding.name.setText("")
+            binding.number.setText("")
+        }
+
+        if (servicePrice.isNotBlank()) {
             binding.textPriceLabel.visibility = View.VISIBLE
             binding.textPriceValue.visibility = View.VISIBLE
-            binding.textPriceValue.text = price
+            binding.textPriceValue.text = servicePrice
         } else {
             binding.textPriceLabel.visibility = View.GONE
             binding.textPriceValue.visibility = View.GONE
         }
 
-        selectedDate = intent.getStringExtra("date")
-        selectedTime = intent.getStringExtra("time")
-        updateDateTimeUi()
-
         binding.button.setOnClickListener {
-            val intent = Intent(this, DateandTime::class.java)
-            intent.putExtra("title", title)
-            pickDateTime.launch(intent)
+            val dtIntent = Intent(this, DateandTime::class.java).apply {
+                putExtra("title", serviceTitle)
+            }
+            pickDateTime.launch(dtIntent)
         }
 
         binding.continueDetails.setOnClickListener {
@@ -120,63 +178,121 @@ class Details : AppCompatActivity() {
                 selectedDate.isNullOrEmpty() || selectedTime.isNullOrEmpty() -> {
                     Toast.makeText(this, "Please select date and time", Toast.LENGTH_SHORT).show()
                 }
-
                 binding.name.text.toString().isEmpty() -> {
                     binding.name.error = "Name is required"
                     Toast.makeText(this, "Name is required", Toast.LENGTH_SHORT).show()
                     binding.name.requestFocus()
                 }
-
                 binding.number.text.toString().length != 9 -> {
                     binding.number.error = "Number Must Be 9 Character"
                     Toast.makeText(this, "Number Must Be 9 Character", Toast.LENGTH_SHORT).show()
                     binding.number.requestFocus()
                 }
-
                 else -> {
-                    val serviceName = title ?: ""
-                    val servicePrice = when {
-                        serviceName.contains("Discount", ignoreCase = true) -> 19
-                        serviceName.contains("Premium", ignoreCase = true) -> 89
-                        serviceName.contains("Paint", ignoreCase = true) -> 39
-                        serviceName.contains("Wax", ignoreCase = true) -> 49
-                        serviceName.contains("Disinfection", ignoreCase = true) -> 29
-                        serviceName.contains("Brand", ignoreCase = true) -> 69
-                        else -> 89
+                    if (isEditMode && editingServiceId != -1) {
+                        saveContactInfo()
+
+                        val newDate = selectedDate ?: ""
+                        val newTime = selectedTime ?: ""
+
+                        val rows = dbHelper.updateServiceDateTime(editingServiceId, newDate, newTime)
+                        if (rows <= 0) {
+                            Toast.makeText(this, "Update failed (rows=$rows)", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
+                        }
+
+                        setResult(RESULT_OK)
+                        finish()
+                        return@setOnClickListener
                     }
 
-                    val walletPrefs = getSharedPreferences("wallet_prefs", MODE_PRIVATE)
-                    val currentBalance = walletPrefs.getInt("wallet_balance", 0)
+                    if (currentUserId == -1) {
+                        Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
 
-                    if (currentBalance < servicePrice) {
+                    val finalPriceStr = normalizedPriceString(serviceTitle, servicePrice)
+                    val needPay = priceToInt(finalPriceStr)
+
+                    val balance = dbHelper.getWalletBalance(currentUserId)
+                    if (needPay <= 0) {
+                        Toast.makeText(this, "Invalid price", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+
+                    if (balance < needPay) {
                         Toast.makeText(
                             this,
                             "Insufficient wallet balance. Please top up your wallet.",
                             Toast.LENGTH_SHORT
                         ).show()
-                    } else {
-                        walletPrefs.edit()
-                            .putInt("wallet_balance", currentBalance - servicePrice)
-                            .apply()
-
-                        val orderid = UUID.randomUUID().toString().substring(0, 18)
-                        val image = intent.getIntExtra("image", 0)
-                        val title = intent.getStringExtra("title")
-
-                        val successIntent = Intent(this, BookingSuccessfully::class.java).apply {
-                            putExtra("title", title)
-                            putExtra("date", selectedDate)
-                            putExtra("time", selectedTime)
-                            putExtra("image", image)
-                            putExtra("orderid", orderid)
-                            putExtra("price", "RM$servicePrice")
-                        }
-                        startActivity(successIntent)
-                        finish()
+                        return@setOnClickListener
                     }
+
+                    dbHelper.updateWalletBalance(currentUserId, balance - needPay)
+
+                    val orderId = "HS" + System.currentTimeMillis()
+                    val addressIndex = if (binding.radioAddress1.isChecked) 1 else 2
+
+                    val intent = Intent(this, BookingSuccessfully::class.java).apply {
+                        putExtra("title", serviceTitle)
+                        putExtra("date", selectedDate ?: "")
+                        putExtra("time", selectedTime ?: "")
+                        putExtra("image", serviceImageRes)
+                        putExtra("price", finalPriceStr)
+
+                        putExtra("contact_name", binding.name.text.toString().trim())
+                        putExtra("contact_number", binding.number.text.toString().trim())
+                        putExtra("address_index", addressIndex)
+                        putExtra("orderid", orderId)
+                    }
+
+                    startActivity(intent)
+                    finish()
                 }
             }
         }
+    }
+
+    private fun loadContactInfo() {
+        if (!isEditMode || editingServiceId == -1) return
+
+        val prefs = getSharedPreferences("details_prefs", MODE_PRIVATE)
+        val nameKey = "contact_name_${editingServiceId}"
+        val numberKey = "contact_number_${editingServiceId}"
+        val addrKey = "address_index_${editingServiceId}"
+
+        val savedName = prefs.getString(nameKey, "")
+        val savedNumber = prefs.getString(numberKey, "")
+        val savedAddressIndex = prefs.getInt(addrKey, 1)
+
+        if (!savedName.isNullOrEmpty()) binding.name.setText(savedName)
+        if (!savedNumber.isNullOrEmpty()) binding.number.setText(savedNumber)
+
+        if (savedAddressIndex == 1) {
+            binding.radioAddress1.isChecked = true
+            binding.radioAddress2.isChecked = false
+        } else {
+            binding.radioAddress1.isChecked = false
+            binding.radioAddress2.isChecked = true
+        }
+        updateAddressCardStyles()
+    }
+
+    private fun saveContactInfo() {
+        if (!isEditMode || editingServiceId == -1) return
+
+        val prefs = getSharedPreferences("details_prefs", MODE_PRIVATE)
+        val nameKey = "contact_name_${editingServiceId}"
+        val numberKey = "contact_number_${editingServiceId}"
+        val addrKey = "address_index_${editingServiceId}"
+        val selectedAddressIndex = if (binding.radioAddress1.isChecked) 1 else 2
+
+        prefs.edit()
+            .putString(nameKey, binding.name.text.toString())
+            .putString(numberKey, binding.number.text.toString())
+            .putInt(addrKey, selectedAddressIndex)
+            .commit()
     }
 
     private fun updateAddressCardStyles() {
@@ -191,6 +307,22 @@ class Details : AppCompatActivity() {
         )
     }
 
+    private fun to12Hour(raw: String?): String {
+        if (raw.isNullOrBlank()) return ""
+        val s = raw.trim()
+        if (s.contains("AM", true) || s.contains("PM", true)) {
+            return s.replace(" ", "").lowercase(Locale.getDefault())
+        }
+        val inFmt = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val outFmt = SimpleDateFormat("h:mma", Locale.getDefault())
+        return try {
+            val d = inFmt.parse(s)
+            outFmt.format(d!!).lowercase(Locale.getDefault())
+        } catch (e: Exception) {
+            s
+        }
+    }
+
     private fun updateDateTimeUi() {
         val date = selectedDate
         val time = selectedTime
@@ -200,8 +332,31 @@ class Details : AppCompatActivity() {
             binding.button.text = "Select Date and Time"
         } else {
             binding.setdata.visibility = View.VISIBLE
-            binding.setdata.text = "Date: $date\nTime: $time"
+            binding.setdata.text = "Date: $date\nTime: ${to12Hour(time)}"
             binding.button.text = "Change Date and Time"
         }
     }
+
+    private var currentUserId: Int = -1
+
+    private fun normalizedPriceString(title: String, rawPrice: String): String {
+        val p = rawPrice.trim()
+        if (p.isNotBlank()) return if (p.startsWith("RM", true)) p else "RM$p"
+
+        return when {
+            title.contains("Discount", true) -> "RM19"
+            title.contains("Premium", true) -> "RM89"
+            title.contains("Paint", true) -> "RM39"
+            title.contains("Wax", true) -> "RM49"
+            title.contains("Disinfection", true) -> "RM29"
+            title.contains("Brand", true) -> "RM69"
+            else -> "RM89"
+        }
+    }
+
+    private fun priceToInt(priceStr: String): Int {
+        val num = Regex("""\d+""").find(priceStr)?.value
+        return num?.toIntOrNull() ?: 0
+    }
+
 }
