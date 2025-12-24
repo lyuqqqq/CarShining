@@ -34,9 +34,9 @@ class AppDatabaseHelper(context: Context) :
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_CARS")
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_SERVICES")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_ADDRESSES")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
         onCreate(db)
     }
 
@@ -715,7 +715,7 @@ class AppDatabaseHelper(context: Context) :
 
         // Users Table
         const val TABLE_USERS = "users"
-        const val COLUMN_USER_ID = "id"
+        const val COLUMN_USER_ID = "user_id"
         const val COLUMN_NAME = "name"
         const val COLUMN_PHONE = "phone"
         const val COLUMN_EMAIL = "email"
@@ -728,7 +728,7 @@ class AppDatabaseHelper(context: Context) :
 
         // Cars Table
         const val TABLE_CARS = "cars"
-        const val COLUMN_CAR_ID = "id"
+        const val COLUMN_CAR_ID = "car_id"
         const val COLUMN_CAR_USER_ID = "user_id"
         const val COLUMN_CAR_PLATE = "plate"
         const val COLUMN_CAR_TYPE = "type"
@@ -736,19 +736,19 @@ class AppDatabaseHelper(context: Context) :
 
         // Services Table
         const val TABLE_SERVICES = "services"
-        const val COLUMN_SERVICE_ID = "id"
+        const val COLUMN_SERVICE_ID = "service_id"
         const val COLUMN_SERVICE_USER_ID = "user_id"
         const val COLUMN_SERVICE_TITLE = "title"
         const val COLUMN_SERVICE_DESC = "description"
-        const val COLUMN_SERVICE_DATE = "date"
-        const val COLUMN_SERVICE_TIME = "time"
+        const val COLUMN_SERVICE_DATE = "service_date"
+        const val COLUMN_SERVICE_TIME = "service_time"
         const val COLUMN_SERVICE_PRICE = "price"
         const val COLUMN_SERVICE_IMAGE_RES = "image_res"
         const val COLUMN_SERVICE_STATUS = "status"
 
         // Addresses Table
         const val TABLE_ADDRESSES = "addresses"
-        const val COLUMN_ADDRESS_ID = "id"
+        const val COLUMN_ADDRESS_ID = "address_d"
         const val COLUMN_ADDRESS_USER_ID = "user_id"
         const val COLUMN_ADDRESS_LABEL = "label"
         const val COLUMN_ADDRESS_PHONE = "phone"
@@ -788,7 +788,8 @@ class AppDatabaseHelper(context: Context) :
                 $COLUMN_SERVICE_TIME TEXT,
                 $COLUMN_SERVICE_PRICE TEXT,
                 $COLUMN_SERVICE_IMAGE_RES INTEGER,
-                $COLUMN_SERVICE_STATUS TEXT
+                $COLUMN_SERVICE_STATUS TEXT,
+                FOREIGN KEY($COLUMN_SERVICE_USER_ID) REFERENCES $TABLE_USERS($COLUMN_USER_ID) ON DELETE CASCADE
             )
         """
 
@@ -799,7 +800,8 @@ class AppDatabaseHelper(context: Context) :
                 $COLUMN_ADDRESS_LABEL TEXT,
                 $COLUMN_ADDRESS_PHONE TEXT,
                 $COLUMN_ADDRESS_DETAIL TEXT,
-                $COLUMN_ADDRESS_IS_DEFAULT INTEGER DEFAULT 0
+                $COLUMN_ADDRESS_IS_DEFAULT INTEGER DEFAULT 0,
+                FOREIGN KEY($COLUMN_ADDRESS_USER_ID) REFERENCES $TABLE_USERS($COLUMN_USER_ID) ON DELETE CASCADE
             )
         """
     }
